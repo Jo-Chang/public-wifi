@@ -172,6 +172,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # Custom
-**/ApiProperties.*
+**/ApiKey.*
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,eclipse,java,maven

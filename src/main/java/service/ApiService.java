@@ -1,13 +1,11 @@
 package service;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.List;
 
-import domain.Wifi;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import property.ApiKey;
 import property.ApiProperties;
 import singleton.OkHttpSingleton;
 
@@ -69,7 +67,7 @@ public class ApiService {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(ApiProperties.DOMAIN);
-		sb.append(ApiProperties.APIKEY);
+		sb.append(ApiKey.APIKEY);
 		sb.append(ApiProperties.SUFFIX);
 		sb.append(start).append("/").append(end);
 		
