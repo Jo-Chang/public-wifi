@@ -14,8 +14,12 @@ public class HistoryService {
 
 	private DbService dbService;
 	
+	public HistoryService() {
+		this.dbService = new DbService();
+	}
+	
 	public void insertHistory(double lat, double lnt) {
-		dbService = new DbService();
+		dbService.createConnection();
 		
 		PreparedStatement pstmt = null;
 		
@@ -44,7 +48,8 @@ public class HistoryService {
 	}
 	
 	public List<History> getAllHistory() {
-		dbService = new DbService();
+		dbService.createConnection();
+		
 		List<History> historyList = new ArrayList<>();
 		
 		Statement stmt = null;
@@ -79,7 +84,7 @@ public class HistoryService {
 	}
 	
 	public void deleteHistory(int id) {
-		dbService = new DbService();
+		dbService.createConnection();
 		
 		PreparedStatement pstmt = null;
 		try {

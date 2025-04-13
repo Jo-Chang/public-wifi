@@ -24,6 +24,9 @@ public class ApiService {
 	public int callAllOpenApi() {
 		int start = 1, end = 1000, res = 0, total = 0;
 		
+		wifiService.open();
+		
+		System.out.println("Inserting Wifi Data...");
 		while ((res = callOpenApi(start, end)) > 0) {
 			start += 1000;
 			end += 1000;
@@ -31,6 +34,7 @@ public class ApiService {
 			total = res;
 		}
 		
+		System.out.println("Insert Complete!");
 		wifiService.close();
 		
 		return total;

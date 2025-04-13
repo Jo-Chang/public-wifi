@@ -5,15 +5,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import lombok.NoArgsConstructor;
 import property.DbProperties;
 
+@NoArgsConstructor
 public class DbService {
 	
 	private Connection conn;
-	
-	public DbService() {
-		createConnection();
-	}
 	
 	public Connection createConnection() {
 		try {
@@ -43,7 +41,20 @@ public class DbService {
 		System.out.println("DB closed");
 	}
 	
+	public Connection getConnection() {
+		return this.conn;
+	}
+	
+	public void initAllTable() {
+//		initWifiTable();
+		initHistoryTable();
+		initBookmarkTable();
+		initWifiBookmarkTable();
+	}
+	
 	public void initWifiTable() {
+		createConnection();
+		
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -80,9 +91,12 @@ public class DbService {
 		}
 		
 		closeConnection();
+		System.out.println("Wifi 초기화 완료!");
 	}
 	
 	public void initHistoryTable() {
+		this.createConnection();
+		
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -106,11 +120,71 @@ public class DbService {
 			}
 		}
 		
-		closeConnection();
+		this.closeConnection();
+		
+		System.out.println("History 초기화 완료!");
 	}
 	
-	public Connection getConnection() {
-		return this.conn;
+	public void initBookmarkTable() {
+		this.createConnection();
+		
+		Statement stmt = null;
+		try {
+			stmt = conn.createStatement();
+			
+			stmt.executeUpdate("drop table if exists Bookmark");
+			stmt.executeUpdate("create table Bookmark ( "
+					+ "	id      INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT , "
+					+ " name		VARCHAR(20) , "
+					+ " bm_order	INTEGER , "
+					+ "	create_ts   TIMESTAMP , "
+					+ "	update_ts   TIMESTAMP ) "
+					);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		this.closeConnection();
+		
+		System.out.println("Bookmark 초기화 완료!");
+	}
+	
+	public void initWifiBookmarkTable() {
+		this.createConnection();
+		
+		Statement stmt = null;
+		try {
+			stmt = conn.createStatement();
+			
+			stmt.executeUpdate("drop table if exists Wifi_Bookmark");
+			stmt.executeUpdate("create table Wifi_Bookmark ( "
+					+ "	id      INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT ,"
+					+ "	bookmark_id   INTEGER , "
+					+ "	wifi_mgr_no   VARCHAR(20) , "
+					+ "	create_ts   TIMESTAMP ,"
+					+ "	UNIQUE (bookmark_id, wifi_mgr_no) ) ");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		this.closeConnection();
+		System.out.println("Wifi_Bookmark 초기화 완료!");
 	}
 	
 }

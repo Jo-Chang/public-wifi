@@ -1,5 +1,6 @@
 package service;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +15,10 @@ public class WifiService {
 	
 	public WifiService() {
 		this.dbService = new DbService();
+	}
+	
+	public Connection open() {
+		return this.dbService.createConnection();
 	}
 	
 	public void close() {
@@ -45,6 +50,7 @@ public class WifiService {
 				+ " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 		
 		PreparedStatement pstmt = null;
+		
 		try {
 			pstmt = dbService.getConnection().prepareStatement(sql);
 			
@@ -65,8 +71,7 @@ public class WifiService {
 			pstmt.setDouble(15, wifi.getLnt());
 			pstmt.setTimestamp(16, wifi.getWorkDttm());
 			
-			int affectedRow = pstmt.executeUpdate();
-			System.out.println(affectedRow + " Rows Updated!");
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -80,7 +85,9 @@ public class WifiService {
 		}
 	}
 	
-	public List<Wifi> getPublicWifi(double lat, double lnt) {
+	public List<Wifi> getNearPublicWifi(double lat, double lnt) {
+		dbService.createConnection();
+		
 		List<Wifi> wifiList = new ArrayList<>();
 		
 		PreparedStatement pstmt = null;
@@ -134,6 +141,52 @@ public class WifiService {
 		}
 		
 		return wifiList;
+	}
+	
+	public Wifi getPublicWifiById(String mgrNo) {
+		dbService.createConnection();
+		Wifi wifi = new Wifi();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = dbService.getConnection().prepareStatement(
+					"select * from Wifi where mgr_no = ? ");
+			pstmt.setString(1, mgrNo);
+			rs = pstmt.executeQuery();
+			
+			wifi.setMgrNo(rs.getString("mgr_no"));
+			wifi.setWrdofc(rs.getString("wrdofc"));
+			wifi.setMainNm(rs.getString("main_nm"));
+			wifi.setAdres1(rs.getString("adres1"));
+			wifi.setAdres2(rs.getString("adres2"));
+			wifi.setInstlFloor(rs.getString("instl_floor"));
+			wifi.setInstlTy(rs.getString("instl_ty"));
+			wifi.setInstlMBy(rs.getString("instl_mby"));
+			wifi.setSvcSe(rs.getString("svc_se"));
+			wifi.setCmcwr(rs.getString("cmcwr"));
+			wifi.setCnstcYear(rs.getInt("cnstc_year"));
+			wifi.setInoutDoor(rs.getString("inout_door"));
+			wifi.setRemars3(rs.getString("remars3"));
+			wifi.setLat(rs.getDouble("lat"));
+			wifi.setLnt(rs.getDouble("lnt"));
+			wifi.setWorkDttm(rs.getTimestamp("work_dttm"));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (pstmt != null) pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			dbService.closeConnection();
+		}
+		
+		return wifi;
 	}
 	
 }

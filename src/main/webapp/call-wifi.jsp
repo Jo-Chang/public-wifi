@@ -1,14 +1,14 @@
+<%@page import="service.DbService"%>
 <%@page import="service.ApiService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
 <%
-	ApiService apiService = new ApiService();
+	DbService dbService = new DbService();
+	dbService.initWifiTable();	
 
+	ApiService apiService = new ApiService();
 	int result = apiService.callAllOpenApi();
-	
-	// int result = apiService.callOpenApi(1, 20); // Test Code
-	// apiService.close(); // Test Code
 %>
     
 <%@ include file="includes/header.jsp" %>

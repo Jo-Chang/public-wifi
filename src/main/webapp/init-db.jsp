@@ -3,8 +3,8 @@
     pageEncoding="UTF-8"%>
     
 <%	
-	// DbService service = new DbService();
-	// service.initTable(); 
+	DbService service = new DbService();
+	service.initAllTable();
 %>
     
 <%@ include file="includes/header.jsp" %>

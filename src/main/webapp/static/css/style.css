@@ -22,3 +22,11 @@ body {
 .location-container {
 	margin: 10px 0;
 }
+
+.bookmark-group-add-btn {
+	margin: 5px 0;
+}
+
+.centered-data {
+	text-align: center;
+}

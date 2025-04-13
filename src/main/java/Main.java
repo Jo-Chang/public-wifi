@@ -5,11 +5,11 @@ import service.DbService;
 public class Main {
 	public static void main(String[] args) {
 		DbService dbService = new DbService();
-		dbService.initHistoryTable();
 		
-//		ApiService apiService = new ApiService();
-//		apiService.callOpenApi(1, 1);
-//		
-//		System.out.println(dbService.getPublicWifi());
+		dbService.initWifiTable();
+		dbService.initHistoryTable();
+		dbService.initBookmarkTable();
+		dbService.initWifiBookmarkTable();
+		
 	}
 }

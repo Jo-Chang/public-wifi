@@ -7,9 +7,8 @@
 	<a href="/history.jsp">위치 히스토리 목록</a>
 	<span>|</span>
 	<a href="/call-wifi.jsp">Open API 와이파이 정보 가져오기</a>
-	
-	<%--
 	<span>|</span>
-	<a href="/init-db.jsp">DB 초기화하기</a>
-	 --%>
+	<a href="/bookmark-list.jsp">북마크 보기</a>
+	<span>|</span>
+	<a href="/bookmark-group.jsp">북마크 그룹 관리</a>
 </div>

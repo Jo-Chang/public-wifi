@@ -54,11 +54,18 @@
 		<td colspan='17'>위치 정보를 입력한 후에 조회해 주세요.</td>
 	</tr>
 <%
+} else {
+	WifiService wifiService = new WifiService();
+	List<Wifi> wifiList = wifiService.getNearPublicWifi(
+		Double.parseDouble(lat), Double.parseDouble(lnt)
+	);
+	if (wifiList == null || wifiList.size() == 0) {
+%>
+	<tr class="no-data">
+		<td colspan='17'>조회된 정보가 없습니다.</td>
+	</tr>	
+<%	
 	} else {
-		WifiService wifiService = new WifiService();
-		List<Wifi> wifiList = wifiService.getPublicWifi(
-				Double.parseDouble(lat), Double.parseDouble(lnt)
-				);
 		for (int i = 0; i < wifiList.size(); i++) {
 			Wifi wifi = wifiList.get(i);
 %>
@@ -66,7 +73,11 @@
 		<td><%=wifi.getDistance() %></td>
 		<td><%=wifi.getMgrNo() %></td>
 		<td><%=wifi.getWrdofc() %></td>
-		<td><%=wifi.getMainNm() %></td>
+		<td>
+			<a href="/detail.jsp?mgrNo=<%= wifi.getMgrNo() %>">
+				<%=wifi.getMainNm() %>
+			</a>
+		</td>
 		<td><%=wifi.getAdres1() %></td>
 		<td><%=wifi.getAdres2() %></td>
 		<td><%=wifi.getInstlFloor() %></td>
@@ -84,6 +95,7 @@
 <%
 		}
 	}
+}
 %>
 </table>
 
